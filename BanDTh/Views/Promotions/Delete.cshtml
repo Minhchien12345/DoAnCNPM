@@ -1,0 +1,32 @@
+﻿@model BanDTh.Models.Promotion
+
+@{
+    ViewData["Title"] = "Xác nhận xóa";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <h1 class="h3 mb-2 text-gray-800">@ViewData["Title"]</h1>
+    <h3 class="text-danger">Bạn có chắc chắn muốn xóa chương trình khuyến mãi này không?</h3>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Tiêu đề</dt>
+                <dd class="col-sm-9">@Model.Title</dd>
+
+                <dt class="col-sm-3">Mức giảm</dt>
+                <dd class="col-sm-9">@Model.DiscountValue @(Model.DiscountType == "Percent" ? "%" : "VND")</dd>
+
+                <dt class="col-sm-3">Thời gian</dt>
+                <dd class="col-sm-9">@string.Format("{0:dd/MM/yyyy}", Model.StartDate) - @string.Format("{0:dd/MM/yyyy}", Model.EndDate)</dd>
+            </dl>
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="PromotionId" />
+                <button type="submit" class="btn btn-danger">Xóa vĩnh viễn</button>
+                <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+            </form>
+        </div>
+    </div>
+</div>

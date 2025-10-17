@@ -1,0 +1,14 @@
+:root {
+--brand: #1db954; /* xanh lá neon nhẹ */
+}
+body { background-color: #0b0b0b; }
+.navbar-brand small { font-size: .7rem; }
+.hero { background: radial-gradient(80% 80% at 20% 20%, rgba(29,185,84,.15),
+transparent 60%); border: 1px solid rgba(255,255,255,.06); }
+.product-card { background: #121212; border: 1px solid rgba(255,255,255,.06); }
+.product-card .price { color: var(--brand); font-weight: 600; }
+a { color: var(--brand); }
+a:hover { color: #21e065; }
+.btn-success { background-color: var(--brand); border-color: var(--brand); }
+.btn-outline-success { color: var(--brand); border-color: var(--brand); }
+.footer { color: #aaa; }

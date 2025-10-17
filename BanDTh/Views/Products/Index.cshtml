@@ -1,0 +1,66 @@
+﻿@model IEnumerable<BanDTh.Models.Product>
+
+@{
+    ViewData["Title"] = "Quản lý Sản phẩm";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .product-card-admin {
+        transition: transform .2s ease-in-out, box-shadow .2s ease-in-out;
+    }
+
+        .product-card-admin:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .product-card-admin .card-img-top {
+            height: 180px;
+            object-fit: contain; /* Dùng contain để ảnh không bị cắt */
+            padding: 10px;
+        }
+
+        .product-card-admin .card-footer {
+            background-color: transparent;
+            border-top: 0;
+        }
+</style>
+
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]</h1>
+        <a asp-action="Create" class="btn btn-primary shadow-sm">
+            <i class="bi bi-plus-lg"></i> Thêm sản phẩm
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card h-100 product-card-admin">
+                    <img src="~/images/products/@item.Thumbnail" class="card-img-top" alt="@item.Name">
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-size: 1rem;">@item.Name</h5>
+                        <p class="card-text text-danger fw-bold">@item.Price.ToString("N0") đ</p>
+                        <ul class="list-unstyled text-muted small">
+                            <li><strong>Tồn kho:</strong> @item.Stock</li>
+                            <li><strong>Danh mục:</strong> @item.Category?.Name</li>
+                            <li><strong>Thương hiệu:</strong> @item.Brand?.Name</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer d-flex justify-content-end gap-2">
+                        <a asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-sm btn-warning">Sửa</a>
+                        <a asp-action="Delete" asp-route-id="@item.ProductId" class="btn btn-sm btn-danger">Xóa</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

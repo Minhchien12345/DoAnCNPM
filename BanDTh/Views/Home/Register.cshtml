@@ -1,0 +1,60 @@
+@{
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+    ViewData["Title"] = "Đăng ký";
+}
+
+
+
+    <!-- Header ngay trên form -->
+    <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
+        <a href="/" class="fw-semibold text-dark text-decoration-none">← Trang chủ</a>
+        <a asp-action="Login" asp-controller="Home" class="fw-semibold text-primary text-decoration-none">Đăng nhập</a>
+    </div>
+
+    <!-- Tiêu đề -->
+    <div class="text-center mb-4">
+        <h3 class="fw-bold">Đăng ký</h3>
+        <p class="text-muted small">Tạo tài khoản mới để bắt đầu mua sắm</p>
+    </div>
+
+    <!-- Form đăng ký -->
+    <form method="post" asp-action="Register" asp-controller="Home">
+        <div class="form-floating mb-3">
+            <input type="text" name="FullName" class="form-control rounded-3" id="fullNameInput" placeholder="Họ và tên" required />
+            <label for="fullNameInput">Họ và tên</label>
+        </div>
+
+        <div class="mb-3">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="Gender" id="genderMale" value="Nam" required>
+                <label class="form-check-label" for="genderMale">Anh</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="Gender" id="genderFemale" value="Nữ" required>
+                <label class="form-check-label" for="genderFemale">Chị</label>
+            </div>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input type="email" name="Email" class="form-control rounded-3" id="emailInput" placeholder="name@example.com" required />
+            <label for="emailInput">Email</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input type="tel" name="PhoneNumber" class="form-control rounded-3" id="phoneInput" placeholder="Số điện thoại" pattern="[0-9]{10,11}" required />
+            <label for="phoneInput">Số điện thoại</label>
+        </div>
+        
+        <div class="form-floating mb-3">
+            <input type="password" name="Password" class="form-control rounded-3" id="passwordInput" placeholder="Mật khẩu" required />
+            <label for="passwordInput">Mật khẩu</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input type="password" name="ConfirmPassword" class="form-control rounded-3" id="confirmPasswordInput" placeholder="Xác nhận mật khẩu" required />
+            <label for="confirmPasswordInput">Xác nhận mật khẩu</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 py-2 rounded-3">Đăng ký</button>
+    </form>
+

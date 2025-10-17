@@ -1,0 +1,133 @@
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Dashboard ";
+}
+
+<div class="container-fluid py-3">
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="card shadow-lg border-0 ">
+                <div class="card-body text-center">
+                    <h5>Tài khoản</h5>
+                    <h2>@Model.UserCount</h2>
+                    <a  asp-action="Users" asp-controller="Admin" class="btn btn-custom btn-sm mt-2">Xem
+                        chi tiết</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-lg border-0">
+                <div class="card-body text-center">
+                    <h5>Danh mục</h5>
+                    <h2>@Model.CategoryCount</h2>
+                    <a asp-area="Admin" asp-controller="Categories" asp-action="Index"
+                        class="btn btn-custom btn-sm mt-2">Xem chi tiết</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-lg border-0">
+                <div class="card-body text-center">
+                    <h5>Sản phẩm</h5>
+                    <h2>@Model.ProductCount</h2>
+                    <a asp-area="Admin" asp-controller="Products" asp-action="Index"
+                        class="btn btn-custom btn-sm mt-2">Xem chi tiết</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-lg border-0">
+                <div class="card-body text-center">
+                    <h5>Tin tức</h5>
+                    <h2>@Model.NewsCount</h2>
+                    <a asp-area="Admin" asp-controller="News" asp-action="Index" class="btn btn-custom btn-sm mt-2">Xem
+                        chi tiết</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-lg border-0">
+                <div class="card-body text-center">
+                    <h5>Khuyến mãi</h5>
+                    <h2>@Model.PromotionCount</h2>
+                    <a asp-area="Admin" asp-controller="Promotions" asp-action="Index"
+                        class="btn btn-custom btn-sm mt-2">Xem chi tiết</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-lg border-0">
+                <div class="card-body text-center">
+                    <h5>Mã giảm giá</h5>
+                    <h2>@Model.DiscountCodeCount</h2>
+                    <a asp-area="Admin" asp-controller="DiscountCodes" asp-action="Index"
+                        class="btn btn-custom btn-sm mt-2">Xem chi tiết</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-lg border-0">
+                <div class="card-body text-center">
+                    <h5>Hỗ trợ & Sửa chữa</h5>
+                    <h2>@Model.RepairCount</h2>
+                    <a asp-area="Admin" asp-controller="Repair" asp-action="Index" class="btn btn-custom btn-sm mt-2">Xem
+                        chi tiết</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        background: #ffffff;
+        /* nền xám đậm */
+        border-radius: 15px;
+        /* bo góc */
+        padding: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        
+        max-width: 250px;
+        /* giới hạn chiều ngang */
+        height: 200px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+
+    .card:hover {
+        transform: translateY(-5px);
+        /* hover nổi lên */
+        box-shadow: 0 8px 16px rgba(161, 161, 161, 0.4);
+        /* bóng mờ */
+    }
+
+    h2 {
+        color: #000000;
+        /* chữ trắng */
+        font-size: 15px;
+    }
+
+    h5 {
+        color: #000000;
+        /* chữ trắng */
+        font-size: 20px;
+    }
+
+    .btn-custom {
+        background-color: #f97625;
+        color: white;
+        border: none;
+        transition: 0.2s;
+    }
+
+    .btn-custom:hover {
+        background-color: #fea939;
+        color: white;
+    }
+</style>

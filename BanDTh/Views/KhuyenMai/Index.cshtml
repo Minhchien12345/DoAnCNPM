@@ -1,0 +1,28 @@
+﻿@model IEnumerable<BanDTh.Models.Product>
+
+@{
+    ViewData["Title"] = "Sản phẩm Khuyến mãi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4 text-white">Sản phẩm đang Khuyến mãi</h1>
+
+    <div class="row row-cols-2 row-cols-md-4 g-3">
+        @if (Model.Any())
+        {
+            @foreach (var product in Model)
+            {
+                <div class="col d-flex justify-content-center">
+                    @await Html.PartialAsync("_ProductCard", product)
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <p class="text-center text-muted">Hiện chưa có sản phẩm nào đang trong chương trình khuyến mãi.</p>
+            </div>
+        }
+    </div>
+</div>

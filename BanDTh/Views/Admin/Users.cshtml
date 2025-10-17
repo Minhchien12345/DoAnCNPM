@@ -1,0 +1,198 @@
+@model IEnumerable<BanDTh.Models.User>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Quản lý tài khoản";
+    var roles = ViewBag.Roles as IEnumerable<BanDTh.Models.Role> ?? Enumerable.Empty<BanDTh.Models.Role>();
+}
+
+<div class="container py-3">
+
+    <!-- 🔹 FORM TẠO TÀI KHOẢN MỚI (ẩn mặc định) -->
+    <div id="createForm" class="card shadow-sm mb-4" style="display:none;">
+        <div class="card-body">
+            <h5 class="mb-3 fw-bold text-success">+ Tạo tài khoản mới</h5>
+
+            <form asp-action="CreateUser" method="post" class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Họ và tên</label>
+                    <input type="text" name="FullName" class="form-control" required />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="Email" class="form-control" required />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Số điện thoại</label>
+                    <input type="tel" name="PhoneNumber" class="form-control" pattern="[0-9]{10}" maxlength="10"
+                           placeholder="VD: 0912345678" required />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Giới tính</label>
+                    <select name="Gender" class="form-select" required>
+                        <option value="Nam">Nam</option>
+                        <option value="Nữ">Nữ</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Vai trò</label>
+                    <select name="RoleId" class="form-select" required>
+                        @foreach (var role in roles)
+                        {
+                            if (role.RoleName != "Customer")
+                            {
+                                <option value="@role.RoleId">@role.RoleName</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Mật khẩu</label>
+                    <input type="password" name="Password" class="form-control" required />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Xác nhận mật khẩu</label>
+                    <input type="password" name="ConfirmPassword" class="form-control" required />
+                </div>
+
+                <div class="col-md-12 text-end">
+                    <button type="submit" class="btn btn-success">Tạo tài khoản</button>
+                    <button type="button" id="btnHideForm" class="btn btn-outline-secondary">Hủy</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 🧭 Thanh công cụ -->
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <button id="btnShowCreateForm" class="btn btn-success px-3">+ Tạo tài khoản mới</button>
+
+        <form method="get" asp-controller="Admin" asp-action="Users" class="d-flex flex-wrap align-items-center gap-2">
+            <select name="roleFilter" class="form-select" style="width:180px;">
+                <option value="">-- Lọc theo vai trò --</option>
+                @foreach (var r in roles)
+                {
+                    <option value="@r.RoleId">@r.RoleName</option>
+                }
+            </select>
+
+            <input type="text" name="keyword" class="form-control" style="width:250px;"
+                   placeholder="Nhập tên hoặc email..." />
+
+            <button type="submit" class="btn btn-dark">Tìm kiếm</button>
+            <a asp-action="Users" class="btn btn-outline-secondary">Xem tất cả</a>
+        </form>
+    </div>
+
+    <!-- 📋 Danh sách tài khoản -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Họ và tên</th>
+                        <th>Email</th>
+                        <th>Vai trò</th>
+                        <th>Trạng thái</th>
+                        <th class="text-end">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        int i = 1;
+                        foreach (var user in Model)
+                        {
+                            <tr id="user-row-@user.UserId">
+                                <td>@i</td>
+                                <td>@user.FullName</td>
+                                <td>@user.Email</td>
+                                <td><span class="badge bg-primary">@user.Role?.RoleName</span></td>
+                                <td>
+                                    <span class="status-text">@(user.IsActive ? "🟢 Hoạt động" : "🔴 Khoá")</span>
+                                </td>
+                                <td class="text-end">
+                                    <a asp-action="EditUser" asp-route-id="@user.UserId"
+                                       class="btn btn-sm btn-outline-primary me-1">✏️ Sửa</a>
+
+                                    <button type="button"
+                                            class="btn btn-sm toggle-lock @(user.IsActive ? "btn-outline-danger" : "btn-outline-success")"
+                                            data-id="@user.UserId"
+                                            data-status="@user.IsActive">
+                                        @(user.IsActive ? "🔒 Khoá" : "🔓 Mở khoá")
+                                    </button>
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="6" class="text-center text-muted py-3">Không có tài khoản nào.</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+.card { border-radius: 12px; border: none; }
+form .form-label { font-weight: 500; }
+.btn-success { background-color: #00b14f; border: none; }
+.btn-success:hover { background-color: #009745; }
+.table-hover tbody tr:hover { background-color: #f9f9f9; }
+</style>
+
+<script>
+const createForm = document.getElementById("createForm");
+document.getElementById("btnShowCreateForm").addEventListener("click", () => {
+    createForm.style.display = "block";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+});
+document.getElementById("btnHideForm").addEventListener("click", () => {
+    createForm.style.display = "none";
+});
+
+document.querySelectorAll(".toggle-lock").forEach(btn => {
+    btn.addEventListener("click", async () => {
+        const id = btn.dataset.id;
+
+        const response = await fetch(`/Admin/ToggleUserStatus/${id}`, {
+            method: "POST"
+        });
+
+        if (!response.ok) {
+            alert("Không thể thay đổi trạng thái!");
+            return;
+        }
+
+        const data = await response.json();
+        const isActive = data.isActive;
+        const row = document.getElementById(`user-row-${id}`);
+        const statusText = row.querySelector(".status-text");
+
+        // Cập nhật giao diện tức thì
+        if (isActive) {
+            btn.textContent = "🔒 Khoá";
+            btn.classList.remove("btn-outline-success");
+            btn.classList.add("btn-outline-danger");
+            statusText.textContent = "🟢 Hoạt động";
+            btn.dataset.status = "true";
+        } else {
+            btn.textContent = "🔓 Mở khoá";
+            btn.classList.remove("btn-outline-danger");
+            btn.classList.add("btn-outline-success");
+            statusText.textContent = "🔴 Khoá";
+            btn.dataset.status = "false";
+        }
+    });
+});
+
+</script>

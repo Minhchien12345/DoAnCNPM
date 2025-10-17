@@ -1,0 +1,88 @@
+@model IEnumerable<BanDTh.Models.Product>
+
+@{
+    ViewData["Title"] = "Sản phẩm nổi bật";
+}
+
+<div class="featured-products container py-4">
+    <h2 class="text-center mb-4">Sản phẩm nổi bật</h2>
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            var discount = (item.OldPrice.HasValue && item.OldPrice.Value > 0)
+                ? Math.Round((1 - (item.Price / item.OldPrice.Value)) * 100)
+                : 0;
+
+            <div class="col-md-3 mb-4">
+                <div class="card shadow-sm border-0 h-100">
+                    <img src="@item.Thumbnail" class="card-img-top" alt="@item.Name" />
+
+                    <div class="card-body text-center">
+                        <h5 class="card-title">@item.Name</h5>
+
+                        <p class="card-text text-danger fw-bold">
+                            @String.Format("{0:N0} ₫", item.Price)
+                        </p>
+
+                        @if (item.OldPrice.HasValue && item.OldPrice.Value > item.Price)
+                        {
+                            <p class="text-muted text-decoration-line-through mb-2">
+                                @String.Format("{0:N0} ₫", item.OldPrice)
+                            </p>
+                        }
+
+                        @if (discount > 0)
+                        {
+                            <span class="badge bg-danger text-white position-absolute top-0 end-0 m-2">
+                                -@discount%
+                            </span>
+                        }
+
+                        <a href="@Url.Action("Details", "Catalog", new { id = item.ProductId })"
+                           class="btn btn-outline-primary mt-2">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+.product-card {
+    background: #2c2c2c;
+    border-radius: 20px;
+    padding: 20px;
+    width: 220px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+}
+.product-card img {
+    max-height: 200px;
+    object-fit: contain;
+}
+.product-card h6 {
+    color: #fff;
+    margin-top: 10px;
+}
+.price span {
+    font-size: 14px;
+}
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+.carousel-control-prev-icon:hover,
+.carousel-control-next-icon:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+.carousel-inner {
+    padding: 10px 0;
+}
+</style>

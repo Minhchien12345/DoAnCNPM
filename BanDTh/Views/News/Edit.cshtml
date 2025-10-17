@@ -1,0 +1,84 @@
+﻿@model BanDTh.Models.News
+
+@{
+    ViewData["Title"] = "Chỉnh sửa tin tức";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="NewsId" />
+                <input type="hidden" asp-for="Thumbnail" />
+                <input type="hidden" asp-for="CreatedAt" />
+
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label">Tiêu đề</label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Slug" class="form-label">Slug (URL thân thiện)</label>
+                    <input asp-for="Slug" class="form-control" />
+                    <span asp-validation-for="Slug" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Content" class="form-label">Nội dung</label>
+                    <textarea asp-for="Content" class="form-control" rows="10"></textarea>
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Ảnh bìa hiện tại</label><br />
+                    <img src="~/images/news/@Model.Thumbnail" class="img-thumbnail" style="max-width: 200px;" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Thay đổi ảnh bìa (chọn file mới)</label>
+                    <input type="file" name="thumbnailFile" class="form-control" />
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="AuthorId" class="form-label">Tác giả</label>
+                        <select asp-for="AuthorId" class="form-select" asp-items="ViewBag.Authors"></select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="CategoryId" class="form-label">Danh mục</label>
+                        <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.Categories"></select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="BrandId" class="form-label">Thương hiệu (tùy chọn)</label>
+                        <select asp-for="BrandId" class="form-select" asp-items="ViewBag.Brands">
+                            <option value="">-- Không chọn --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input class="form-check-input" asp-for="IsPublished" />
+                    <label class="form-check-label" asp-for="IsPublished">
+                        Xuất bản
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                    <a asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,82 @@
+@model BanDTh.Models.Product
+
+@{
+    // ✅ SỬA ĐỔI: Lấy đối tượng PriceCalculationResult từ ViewBag
+    var priceDetailsDict = ViewBag.PriceDetails as Dictionary<int, BanDTh.Helpers.PriceCalculationResult>;
+    var priceDetails = (priceDetailsDict != null && priceDetailsDict.ContainsKey(Model.ProductId))
+                       ? priceDetailsDict[Model.ProductId]
+                       : new BanDTh.Helpers.PriceCalculationResult { FinalPrice = Model.Price, PromotionEndDate = null };
+}
+
+<style>
+    .product-card {
+        background: #2c2c2c;
+        border-radius: 15px;
+        padding: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+        max-width: 150px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.4);
+        }
+
+        .product-card h5 {
+            color: #fff;
+            font-size: 13px;
+            min-height: 38px; /* Giữ 2 dòng cho tên sản phẩm */
+        }
+
+    .product-img {
+        max-height: 120px;
+        object-fit: contain;
+    }
+
+    .price-section {
+        margin-top: auto;
+        color: #fff;
+        font-size: 14px;
+    }
+
+    /* ✅ BỔ SUNG: CSS cho ngày kết thúc */
+    .promo-end-date {
+        font-size: 11px;
+        color: #ffc107; /* Màu vàng */
+        margin-top: 5px;
+        min-height: 16px; /* Giữ khoảng trống ngay cả khi không có KM */
+    }
+
+</style>
+
+<div class="product-card text-center">
+    <a asp-controller="Catalog" asp-action="Details" asp-route-slug="@Model.Slug"
+       class="text-decoration-none text-light d-flex flex-column h-100">
+
+        <img src="~/images/products/@Model.Thumbnail" class="img-fluid product-img" alt="@Model.Name" loading="lazy">
+        <h5 class="mt-3">@Model.Name</h5>
+
+        <div class="price-section mt-2">
+            @if (priceDetails.FinalPrice < Model.Price)
+            {
+                <strong class="text-danger">@priceDetails.FinalPrice.ToString("N0") đ</strong>
+                <del class="text-muted small ms-2">@Model.Price.ToString("N0") đ</del>
+            }
+            else
+            {
+                <strong>@Model.Price.ToString("N0") đ</strong>
+            }
+        </div>
+
+        <div class="promo-end-date">
+            @if (priceDetails.PromotionEndDate.HasValue)
+            {
+                <span>Chỉ còn đến @priceDetails.PromotionEndDate.Value.ToString("dd/MM")</span>
+            }
+        </div>
+    </a>
+</div>

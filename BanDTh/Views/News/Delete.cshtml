@@ -1,0 +1,40 @@
+﻿@model BanDTh.Models.News
+
+@{
+    ViewData["Title"] = "Xác nhận xóa tin tức";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <h1 class="h3 mb-2 text-gray-800">@ViewData["Title"]</h1>
+    <h3 class="text-danger">Bạn có chắc chắn muốn xóa bài viết này không?</h3>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Thông tin bài viết</h6>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-2">Tiêu đề</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.Title)</dd>
+
+                <dt class="col-sm-2">Tác giả</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.Author.FullName)</dd>
+
+                <dt class="col-sm-2">Ngày tạo</dt>
+                <dd class="col-sm-10">@string.Format("{0:dd/MM/yyyy}", Model.CreatedAt)</dd>
+
+                <dt class="col-sm-2">Ảnh bìa</dt>
+                <dd class="col-sm-10">
+                    <img src="~/images/news/@Model.Thumbnail" style="max-width: 250px;" />
+                </dd>
+            </dl>
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="NewsId" />
+                <button type="submit" class="btn btn-danger">Xóa vĩnh viễn</button> |
+                <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+            </form>
+        </div>
+    </div>
+</div>

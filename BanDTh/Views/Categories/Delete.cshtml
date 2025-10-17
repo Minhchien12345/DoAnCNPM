@@ -1,0 +1,30 @@
+﻿@model BanDTh.Models.Category
+
+@{
+    ViewData["Title"] = "Xác nhận xóa danh mục";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <h1 class="h3 mb-2 text-gray-800">@ViewData["Title"]</h1>
+    <h3 class="text-danger">Bạn có chắc chắn muốn xóa danh mục "@Model.Name" không?</h3>
+    <p class="text-warning">Lưu ý: Hành động này có thể ảnh hưởng đến các sản phẩm và tin tức thuộc danh mục này.</p>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Tên danh mục</dt>
+                <dd class="col-sm-9">@Model.Name</dd>
+
+                <dt class="col-sm-3">Slug</dt>
+                <dd class="col-sm-9">@Model.Slug</dd>
+            </dl>
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="CategoryId" />
+                <button type="submit" class="btn btn-danger">Xóa vĩnh viễn</button>
+                <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+            </form>
+        </div>
+    </div>
+</div>

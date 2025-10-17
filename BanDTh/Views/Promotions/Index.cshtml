@@ -1,0 +1,77 @@
+﻿@model IEnumerable<BanDTh.Models.Promotion>
+
+@{
+    ViewData["Title"] = "Quản lý Khuyến mãi";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]</h1>
+        <a asp-action="Create" class="btn btn-primary shadow-sm">
+            <i class="bi bi-plus-lg"></i> Tạo khuyến mãi mới
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Tiêu đề</th>
+                            <th>Mức giảm</th>
+                            <th>Ngày bắt đầu</th>
+                            <th>Ngày kết thúc</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Title</td>
+                                <td>
+                                    @item.DiscountValue @(item.DiscountType == "Percent" ? "%" : "VND")
+                                </td>
+                                <td>@string.Format("{0:dd/MM/yyyy}", item.StartDate)</td>
+                                <td>@string.Format("{0:dd/MM/yyyy}", item.EndDate)</td>
+                                <td>
+                                    @{
+                                        var now = DateTime.Now;
+                                        if (item.IsActive != true)
+                                        {
+                                            <span class="badge bg-secondary">Đã tắt</span>
+                                        }
+                                        else if (item.StartDate > now)
+                                        {
+                                            <span class="badge bg-info">Chưa bắt đầu</span>
+                                        }
+                                        else if (item.EndDate < now.Date)
+                                        {
+                                            <span class="badge bg-danger">Đã hết hạn</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success">Đang hoạt động</span>
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.PromotionId" class="btn btn-warning btn-sm">Sửa</a>
+                                    <a asp-action="Delete" asp-route-id="@item.PromotionId" class="btn btn-danger btn-sm">Xóa</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
